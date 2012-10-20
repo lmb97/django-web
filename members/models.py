@@ -4,7 +4,7 @@ from django.core.validators import *
 
 
 
-class instruments(models.Model):
+class Instrument(models.Model):
 	id = models.AutoField(primary_key=True, db_column='id', editable=False) 
 	name = models.CharField(max_length=30, db_column='name', unique=True)
 
@@ -15,7 +15,7 @@ class instruments(models.Model):
 		db_table = 'instruments'
 
 
-class posts(models.Model):
+class Post(models.Model):
 	id = models.AutoField(primary_key=True, db_column='id', editable=False)
 	name = models.CharField(db_column='name',max_length=45, unique=True)
 
@@ -26,7 +26,7 @@ class posts(models.Model):
 	        return self.name
 
 
-class emails(models.Model):
+class Email(models.Model):
 	id = models.AutoField(primary_key=True, db_column='id', editable=False)
 	name = models.CharField(db_column='name', max_length=40, unique=True)
 	active = models.BooleanField(db_column='active', default=True)
@@ -38,7 +38,7 @@ class emails(models.Model):
 	        return self.name
 
 
-class people(models.Model):
+class Person(models.Model):
 	id = models.AutoField(primary_key=True, db_column='id', editable=False)
 	name = models.CharField(max_length=25, db_column='name')
 	surname = models.CharField(max_length=45, db_column='surname')
@@ -51,9 +51,9 @@ class people(models.Model):
 	postcode = models.CharField(db_column='postcode', max_length=5)
 	join_ref = models.ForeignKey('self', db_column='join_ref', blank=True, null=True)
 
-	instruments = models.ManyToManyField(instruments, through='rel_people_instruments')
-	posts = models.ManyToManyField(posts, through='rel_people_posts')
-	emails = models.ManyToManyField(emails, through='rel_people_emails')
+	instruments = models.ManyToManyField(Instrument, through='PersonInstrumentRelationship')
+	posts = models.ManyToManyField(Post, through='PersonPostRelationship')
+	emails = models.ManyToManyField(Email, through='PersonEmailRelationship')
 	user = models.OneToOneField(User, db_column='user', blank=True, null=True)
 
 	class Meta:
@@ -62,19 +62,20 @@ class people(models.Model):
 	def __unicode__(self):
 	        return self.name + ' ' + self.surname
 
-class rel_people_instruments(models.Model):
+
+class PersonInstrumentRelationship(models.Model):
 	id = models.AutoField(primary_key=True, db_column='id', editable=False)
-	person = models.ForeignKey(people, db_column='person')
-	instrument = models.ForeignKey(instruments, db_column='instrument')
+	person = models.ForeignKey(Person, db_column='person')
+	instrument = models.ForeignKey(Instrument, db_column='instrument')
 
 	class Meta:
 		db_table = 'rel_people_instruments'
 		unique_together=('person','instrument')
 
 
-class rel_people_posts(models.Model):
-	post = models.ForeignKey(posts,db_column='post')
-	person = models.ForeignKey(people,db_column='person')
+class PersonPostRelationship(models.Model):
+	post = models.ForeignKey(Post,db_column='post')
+	person = models.ForeignKey(Person,db_column='person')
 	join_date = models.DateField(db_column='join_date')
 	out_date = models.DateField(db_column='out_date', blank=True, null=True)
 
@@ -82,9 +83,9 @@ class rel_people_posts(models.Model):
 		db_table = 'rel_people_posts'
 
 
-class rel_people_emails(models.Model):
-	person = models.ForeignKey(people,db_column='person')
-	email = models.ForeignKey(emails,db_column='email')
+class PersonEmailRelationship(models.Model):
+	person = models.ForeignKey(Person,db_column='person')
+	email = models.ForeignKey(Email,db_column='email')
 
 	class Meta:
 		db_table = 'rel_people_emails'
