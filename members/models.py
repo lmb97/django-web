@@ -8,6 +8,9 @@ class instruments(models.Model):
 	id = models.AutoField(primary_key=True, db_column='id', editable=False) 
 	name = models.CharField(max_length=30, db_column='name', unique=True)
 
+	def __unicode__(self):
+	        return self.name
+
 	class Meta:
 		db_table = 'instruments'
 
@@ -19,6 +22,9 @@ class posts(models.Model):
 	class Meta:
 		db_table = 'posts'
 
+	def __unicode__(self):
+	        return self.name
+
 
 class emails(models.Model):
 	id = models.AutoField(primary_key=True, db_column='id', editable=False)
@@ -27,6 +33,9 @@ class emails(models.Model):
 
 	class Meta:
 		db_table = 'emails'
+
+	def __unicode__(self):
+	        return self.name
 
 
 class people(models.Model):
@@ -50,6 +59,8 @@ class people(models.Model):
 	class Meta:
 		db_table = 'people'
 
+	def __unicode__(self):
+	        return self.name + ' ' + self.surname
 
 class rel_people_instruments(models.Model):
 	id = models.AutoField(primary_key=True, db_column='id', editable=False)
