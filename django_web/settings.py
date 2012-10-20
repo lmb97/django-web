@@ -1,4 +1,5 @@
 # Django settings for django_web project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

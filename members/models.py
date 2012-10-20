@@ -53,11 +53,12 @@ class people(models.Model):
 
 class rel_people_instruments(models.Model):
 	id = models.AutoField(primary_key=True, db_column='id', editable=False)
-	instrument = models.ForeignKey(instruments, db_column='instrument')
 	person = models.ForeignKey(people, db_column='person')
+	instrument = models.ForeignKey(instruments, db_column='instrument')
 
 	class Meta:
 		db_table = 'rel_people_instruments'
+		unique_together=('person','instrument')
 
 
 class rel_people_posts(models.Model):
@@ -76,5 +77,5 @@ class rel_people_emails(models.Model):
 
 	class Meta:
 		db_table = 'rel_people_emails'
-
+		unique_together=('person','email')
 
