@@ -19,6 +19,31 @@ class PersonAdmin(admin.ModelAdmin):
 		PersonPostRelationshipInline,
 		PersonEmailRelationshipInline,
 	)
+	fieldsets = (
+		('Personal Information', {
+			'fields':[
+				'name',
+				'surname',
+				'dni_number',
+				'dni_letter',
+				'birth',
+			]
+		}),
+		('Contact Information', {
+			'fields':[
+				'address',
+				'postcode',
+				'phone_mobile',
+				'phone_house',
+			]
+		}),
+		('Miscelaneous Information', {
+			'fields':[
+				'join_ref',
+				'user',
+			]
+		}),
+	)
 
 class InstrumentAdmin(admin.ModelAdmin):
 	inlines = (
