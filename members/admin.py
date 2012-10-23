@@ -14,11 +14,6 @@ class PersonEmailRelationshipInline(admin.TabularInline):
 	extra = 1
 
 class PersonAdmin(admin.ModelAdmin):
-	filter_vertical = [
-		'instruments',
-		'posts',
-		'emails',
-    ]
 	inlines = (
 		PersonInstrumentRelationshipInline,
 		PersonPostRelationshipInline,
@@ -51,19 +46,16 @@ class PersonAdmin(admin.ModelAdmin):
 	)
 
 class InstrumentAdmin(admin.ModelAdmin):
-	filter_vertical = ['Person_set']
 	inlines = (
 		PersonInstrumentRelationshipInline,
 	)
 
 class PostAdmin(admin.ModelAdmin):
-	filter_vertical = ['person']
 	inlines = (
 		PersonPostRelationshipInline,
 	)
 
 class EmailAdmin(admin.ModelAdmin):
-	filter_vertical = ['person']
 	inlines = (
 		PersonEmailRelationshipInline,
 	)
